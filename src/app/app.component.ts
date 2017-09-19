@@ -7,7 +7,7 @@ import { IoService } from './io.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  title = 'Auto DD';
 
   messages = [];
   connection;
@@ -22,8 +22,8 @@ export class AppComponent {
   ngOnInit() {
     this.connection = this.ioService.getMessages().subscribe(message => {
       switch(message['label']){
-        case "new-card":
-          this.cards.push(message['name']);
+        case "cards":
+          this.cards = message['cards'];
           break;
         default:
           break;

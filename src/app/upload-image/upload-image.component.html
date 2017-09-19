@@ -1,0 +1,11 @@
+<h2>Upload image!</h2>
+<h3>{{ progress }}</h3>
+<div class="form-group">
+    <label class="custom-file">
+    <input type="file" id="image" class="custom-file-input" (change)="onChange($event)">
+    <span class="custom-file-control"></span>
+    </label>
+</div>
+<div class="form-group">
+    <button class="btn btn-success" (click)="upload()">Upload</button>
+</div>
