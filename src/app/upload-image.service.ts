@@ -14,7 +14,7 @@ export class UploadImageService {
 
   post(form_data): Observable<any> {
     return this.http
-      .withUploadProgressListener(progress => { this.progressEvent.emit(`Uploading ${progress.percentage}%`); })
+      .withUploadProgressListener(progress => { this.progressEvent.emit(progress.percentage); })
       .post(UploadImageService.ENDPOINT, form_data)
       .map(result => result.json());
   }

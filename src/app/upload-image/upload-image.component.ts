@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UploadImageService } from '../upload-image.service';
+import { IoService } from '../io.service';
 
 @Component({
   selector: 'app-upload-image',
@@ -14,12 +15,25 @@ export class UploadImageComponent implements OnInit {
   description;
   file;
   progress;
+  connection;
+  image_info;
+  status;
 
-  constructor(private uploadImageService: UploadImageService) { }
+  constructor(private uploadImageService: UploadImageService, private ioService: IoService) { }
 
   ngOnInit() {
     this.uploadImageService.progressEvent.subscribe(data => {
       this.progress = data;
+    });
+
+    this.connection = this.ioService.getMessages().subscribe(message => {
+      switch(message['label']){
+        case "image_info":
+          this.image_info = message['data'];
+          break;
+        default:
+          break;
+      }
     });
   }
 
@@ -27,8 +41,8 @@ export class UploadImageComponent implements OnInit {
     this.form_data.append('image', this.file);
     this.uploadImageService.post(this.form_data)
       .subscribe(result => {
-        console.log(result);
-        this.progress = "";
+        this.status = result.message;
+        this.image_info = result.data;
       });
   }
 
@@ -37,5 +51,9 @@ export class UploadImageComponent implements OnInit {
     if (files && files[0]) {
       this.file = files[0];
     }
+  }
+
+  ngOnDestroy() {
+    this.connection.unsubscribe();
   }
 }

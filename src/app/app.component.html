@@ -1,19 +1,30 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-  <img width="300" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+  <img width="300" src="assets/logo.png">
 </div>
 
 <app-upload-image></app-upload-image>
 
 <div class="row">
-  <h2>Here are your sd cards: </h2>
-  <ul>
-    <li *ngFor = "let card of cards">
-      <h2>{{ card.name }}</h2>
-      <p>{{ card.status }}</p>
-    </li>
-  </ul>
+  <h2 *ngIf="cards.length === 0">Insert a SD Card to start!</h2>
+  <div *ngIf="cards.length > 0">
+    <h2>Here are your sd cards: </h2>
+    <!-- <button *ngIf="allDone()" (click)="ejectAll()">Eject all</button> -->
+  </div>
+  <md-grid-list cols="2" rowHeight="2:1">
+      <md-grid-tile *ngFor = "let card of cards">
+          <h2>{{ card.name }}</h2>
+          <p>{{ card.status }}</p>
+          <p>{{ card.percentage }}%</p>
+          <section class="example-section">
+            <md-progress-bar
+              class="example-margin"
+              [color]="color"
+              [mode]="mode"
+              [value]="card.percentage">
+            </md-progress-bar>
+          </section>
+          <!-- <button (click)="eject(card.name)">Eject</button> -->
+      </md-grid-tile>
+  </md-grid-list>
 </div>

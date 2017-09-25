@@ -1,11 +1,22 @@
-<h2>Upload image!</h2>
-<h3>{{ progress }}</h3>
-<div class="form-group">
+<h2>Upload a new image!</h2>
+<h3 *ngIf="image_info">Latest image uploaded on {{ image_info.datetime }}</h3>
+<h3 *ngIf="!image_info">No known image on system or couldn't retrieve data.</h3>
+<div *ngIf="progress">
+    <h3>{{ progress }}%</h3>
+    <md-progress-bar 
+        class="example-margin"
+        [color]="color"
+        [mode]="mode"
+        [value]="progress">
+    </md-progress-bar>
+</div>
+<span>{{ status }}</span>
+<md-form-field>
     <label class="custom-file">
-    <input type="file" id="image" class="custom-file-input" (change)="onChange($event)">
+    <input type="file" id="image" class="custom-file-input" (change)="onChange($event)" md-raised-button>
     <span class="custom-file-control"></span>
     </label>
-</div>
-<div class="form-group">
-    <button class="btn btn-success" (click)="upload()">Upload</button>
-</div>
+</md-form-field>
+<md-form-field>
+    <button (click)="upload()" md-raised-button color="primary">Upload</button>
+</md-form-field>

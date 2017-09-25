@@ -6,6 +6,8 @@ import { UploadImageComponent } from './upload-image/upload-image.component';
 import { UploadImageService } from './upload-image.service';
 import { HttpModule } from '@angular/http';
 import { ProgressHttpModule } from "angular-progress-http";
+import { MatProgressBarModule, MdButtonModule, MdGridListModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,10 @@ import { ProgressHttpModule } from "angular-progress-http";
   imports: [
     BrowserModule,
     HttpModule,
-    ProgressHttpModule
+    ProgressHttpModule,
+    MatProgressBarModule,
+    BrowserAnimationsModule,
+    MdButtonModule
   ],
   providers: [
     IoService,
