@@ -5,7 +5,7 @@ import * as io from 'socket.io-client';
 
 @Injectable()
 export class IoService {
-  private url = 'http://localhost:8080';  
+  private url = '/';  
   private socket;
   
   sendMessage(message){
