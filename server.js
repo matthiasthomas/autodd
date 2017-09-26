@@ -18,7 +18,7 @@ sd_watcher.init(err => {
   }
 });
 
-const port = 8080;
+const port = 80;
 
 server.listen(port, function () {
   console.log('App listening on port ' + port + '!');
