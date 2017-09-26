@@ -11,7 +11,12 @@ const api = require(path.join(process.cwd(), 'server/api'))(app);
 app.use(express.static(path.join(__dirname, 'dist')));
 global.root_path = __dirname;
 
-sd_watcher.init();
+sd_watcher.init(err => {
+  if(err) {
+    console.log('Error when initializing sd_watcher: ' + err);
+    process.exit(1);
+  }
+});
 
 const port = 8080;
 

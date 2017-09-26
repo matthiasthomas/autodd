@@ -4,6 +4,7 @@ const custom_fs = require('./custom-fs');
 
 const cards = [];
 const processes = {};
+let root_device_name;
 let timeout = null;
 
 function updateStatus(name, status, percentage) {
@@ -45,7 +46,22 @@ function check(callback) {
   lsblk.on('close', (code) => {
     return callback(result);
   });
-};
+}
+
+function getRootDevice(callback) {
+  const args = ['-c', "lsblk -no pkname $(mount|grep ' / '|cut -d' ' -f 1)"];
+  const root_d = spawn('sh', args);
+  root_device_name = "";
+  root_d.stdout.on('data', data => {
+    root_device_name += (data.toString().replace(/[^A-Za-z0-9]+/g, ''));
+  });
+  root_d.stderr.on('data', (data) => {
+    return callback(data);
+  });
+  root_d.on('close', (code) => {
+    return callback();
+  });
+}
 
 function cardInUse(name){
   for(let c of cards) {
@@ -158,7 +174,7 @@ function startWatch() {
         connected_cards[r[0]] = true;
         if(r[0] !== '' &&
             r[0] !== 'NAME' &&
-            r[0] !== 'sda' &&
+            r[0] !== root_device_name &&
             r[0] !== 'sr0' &&
             !cardInUse(r[0])) {
               dd_the_card(r[0]);
@@ -185,7 +201,13 @@ global.io.on('connection', function (socket) {
 
 module.exports = {
     cards: cards,
-    init: function(){
+    init: function(callback){
+      // Start by checking which device is the root device
+      getRootDevice(err => {
+        if(err) return callback(err);
+
         startWatch();
+        return callback();
+      });
     }
 }
